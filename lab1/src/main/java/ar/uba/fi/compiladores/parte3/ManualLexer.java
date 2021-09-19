@@ -4,13 +4,13 @@ import java.util.List;
 import java.util.regex.Matcher;
 
 import ar.uba.fi.compiladores.parte1.RegexLibrary;
+import ar.uba.fi.compiladores.parte3.BrainfuckAdder.BrainfuckAdderTokens;
 
 /**
  * Clase que implementa un algoritmo de lexeo a partir de un lenguage.
  */
 public class ManualLexer<S,T>{
     private LanguageAutomata<S,T> language;
-    RegexLibrary regexLibrary = new RegexLibrary();
     public ManualLexer(LanguageAutomata<S,T> language){
         this.language=language;
     }
@@ -23,18 +23,21 @@ public class ManualLexer<S,T>{
         this.language.eofTokenType();
 
         S actualState = this.language.getInitialState();
-        S finalState = null;
+        S finalState = this.language.getDeadState();
+        int indexState = 0; 
         for (int i = 0; i < program.length(); i++) {
             actualState = this.language.transition(actualState, program.charAt(i));
+            System.out.println(this.language.stateToTokenType(actualState));
+            if (actualState == this.language.getDeadState()){
+                return new SingleTokenExtraction<S>(finalState, indexState);
+            }
             if (this.language.isFinal(actualState)) {
                 finalState = actualState;
-            }
-            if (actualState == this.language.getDeadState()){
-                return new SingleTokenExtraction<S>(finalState, i);    
+                indexState = i;
             }
         }
         
-        return null;
+        return new SingleTokenExtraction<S>(actualState, indexState);
     }
     public List<Token<T>> lex(String program){
         return null;
