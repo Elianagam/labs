@@ -1,10 +1,7 @@
 package ar.uba.fi.compiladores.parte3;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
-
-import ar.uba.fi.compiladores.parte1.RegexLibrary;
-import ar.uba.fi.compiladores.parte3.BrainfuckAdder.BrainfuckAdderTokens;
 
 /**
  * Clase que implementa un algoritmo de lexeo a partir de un lenguage.
@@ -27,7 +24,6 @@ public class ManualLexer<S,T>{
         int indexState = 0; 
         for (int i = 0; i < program.length(); i++) {
             actualState = this.language.transition(actualState, program.charAt(i));
-            System.out.println(this.language.stateToTokenType(actualState));
             if (actualState == this.language.getDeadState()){
                 return new SingleTokenExtraction<S>(finalState, indexState);
             }
@@ -36,11 +32,30 @@ public class ManualLexer<S,T>{
                 indexState = i;
             }
         }
-        
         return new SingleTokenExtraction<S>(actualState, indexState);
     }
-    public List<Token<T>> lex(String program){
-        return null;
+
+    public List<Token<T>> lex(String program) throws BadTokenException{
+        
+        List<Token<T>> tokens = new ArrayList<>();
+        while (!program.isEmpty()) {
+            SingleTokenExtraction<S> token = extractToken(program);
+            if (token.getFinalState() == this.language.getDeadState()) {
+                program = program.substring(token.getLastFinalIndex()+1, program.length());
+                continue;
+            } else if (token.getFinalState() == this.language.getErrorState()) {
+                throw new BadTokenException(program);
+            } else {
+                String subprogram = program.substring(0, token.getLastFinalIndex()+1);
+                program = program.substring(token.getLastFinalIndex()+1, program.length());
+    
+                S s = token.getFinalState();
+                T tFromS = this.language.stateToTokenType(s);
+                tokens.add(new Token<T>(tFromS, subprogram));
+            }
+        }
+        tokens.add(new Token<T>(this.language.eofTokenType(), null));
+        return tokens;
     }
 
 }
