@@ -17,8 +17,6 @@ public class ManualLexer<S,T>{
      * @return
      */
     public SingleTokenExtraction<S> extractToken(String program){
-        this.language.eofTokenType();
-
         S actualState = this.language.getInitialState();
         S finalState = this.language.getDeadState();
         int indexState = 0; 
@@ -36,7 +34,6 @@ public class ManualLexer<S,T>{
     }
 
     public List<Token<T>> lex(String program) throws BadTokenException{
-        
         List<Token<T>> tokens = new ArrayList<>();
         while (!program.isEmpty()) {
             SingleTokenExtraction<S> token = extractToken(program);
@@ -49,8 +46,7 @@ public class ManualLexer<S,T>{
                 String subprogram = program.substring(0, token.getLastFinalIndex()+1);
                 program = program.substring(token.getLastFinalIndex()+1, program.length());
     
-                S s = token.getFinalState();
-                T tFromS = this.language.stateToTokenType(s);
+                T tFromS = this.language.stateToTokenType(token.getFinalState());
                 tokens.add(new Token<T>(tFromS, subprogram));
             }
         }
