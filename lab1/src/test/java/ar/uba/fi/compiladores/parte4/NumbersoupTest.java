@@ -22,14 +22,16 @@ public class NumbersoupTest {
             new Token<>(TokenTypes.BIN,"0110"),
             new Token<>(TokenTypes.DEC,"102"),
             new Token<>(TokenTypes.HEX,"018F"),
-            new Token<>(TokenTypes.BINHEX,"0AFx010")
+            new Token<>(TokenTypes.BINHEX,"0AFx010"),
+            new Token<>(TokenTypes.EOF,null)
         );
         assertEquals(expected, lexer.lex(" 0110 102 018F 0AFx010"));
     }
     @Test void testOtherTokensAsPostfixes() throws BadTokenException{
         List<Token<TokenTypes>> expected = Arrays.asList(
             new Token<>(TokenTypes.DEC,"210"),
-            new Token<>(TokenTypes.HEX,"F801")
+            new Token<>(TokenTypes.HEX,"F801"),
+            new Token<>(TokenTypes.EOF,null)
         );
         assertEquals(expected, lexer.lex(" 210 F801"));
     }

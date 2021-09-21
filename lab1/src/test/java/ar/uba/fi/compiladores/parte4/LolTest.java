@@ -46,7 +46,8 @@ public class LolTest {
             new Token<>(TokenTypes.LAL,"PA"),
             new Token<>(TokenTypes.LEL,"PE"),
             new Token<>(TokenTypes.LIL,"LI"),
-            new Token<>(TokenTypes.LOL,"LO")
+            new Token<>(TokenTypes.LOL,"LO"),
+            new Token<>(TokenTypes.EOF,null)
         );
         assertEquals(expected, lexer.lex(" PA PE LI LO"));
     }
@@ -57,7 +58,8 @@ public class LolTest {
             new Token<>(TokenTypes.LAL,"PARARARAPAPAPAPARA"),
             new Token<>(TokenTypes.LEL,"PEPE"),
             new Token<>(TokenTypes.LIL,"LIRIRIRIRILILI"),
-            new Token<>(TokenTypes.LOL,"LOLOLOLOLO")
+            new Token<>(TokenTypes.LOL,"LOLOLOLOLO"),
+            new Token<>(TokenTypes.EOF,null)
         );
         assertEquals(expected, lexer.lex(" PARARARAPAPAPAPARA PEPE LIRIRIRIRILILI LOLOLOLOLO"));
     }

@@ -28,7 +28,8 @@ public class EnglishCommanderTest {
             new Token<>(TokenTypes.WORD,"DOING"),
             new Token<>(TokenTypes.WORD,"DONER"),
             new Token<>(TokenTypes.WORD,"DONN"),
-            new Token<>(TokenTypes.WORD,"DOSE")
+            new Token<>(TokenTypes.WORD,"DOSE"),
+            new Token<>(TokenTypes.EOF,null)
         );
         assertEquals(expected, lexer.lex(" DOING DONER DONN DOSE"));
     }
@@ -44,7 +45,8 @@ public class EnglishCommanderTest {
             new Token<>(TokenTypes.WORD,"ADORE"),
             new Token<>(TokenTypes.DON,"DON"),
             new Token<>(TokenTypes.WORD,"ABANDONE"),
-            new Token<>(TokenTypes.DONE,"DONE")
+            new Token<>(TokenTypes.DONE,"DONE"),
+            new Token<>(TokenTypes.EOF,null)
         );
         assertEquals(expected, lexer.lex(" DO ADORE DON ABANDONE DONE"));
     }
