@@ -7,13 +7,13 @@ public class RegexLibrary {
      * Regex para decimales que no empiezan en 0
      * @return
      */
-    Pattern getDecimalsRegex(){ return Pattern.compile("[1-9][0-9]*"); }
+    public Pattern getDecimalsRegex(){ return Pattern.compile("[1-9][0-9]*"); }
 
     /**
      * Regex para decimales que no empiezan en 0
      * @return
      */
-    Pattern getHexaRegex(){ return Pattern.compile("[1-9A-F][0-9A-F]*"); }
+    public Pattern getHexaRegex(){ return Pattern.compile("[1-9A-F][0-9A-F]*"); }
 
     /**
      * Regex para brainfuck. 
