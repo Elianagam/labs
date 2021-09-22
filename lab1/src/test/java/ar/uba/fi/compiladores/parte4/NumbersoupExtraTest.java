@@ -13,36 +13,39 @@ import ar.uba.fi.compiladores.parte4.Numbersoup.Automata;
 import ar.uba.fi.compiladores.parte4.Numbersoup.State;
 import ar.uba.fi.compiladores.parte4.Numbersoup.TokenTypes;
 
-public class NumbersoupTest {
+public class NumbersoupExtraTest {
     Automata language = new Automata();
     ManualLexer<State,TokenTypes> lexer = new ManualLexer<State,TokenTypes>(language);
 
     @Test 
-    public void testOtherTokensAsPrefixes() throws BadTokenException{
+    public void testOtherTokensAsDecimal() throws BadTokenException{
         List<Token<TokenTypes>> expected = Arrays.asList(
-            new Token<>(TokenTypes.BIN,"0110"),
-            new Token<>(TokenTypes.DEC,"102"),
-            new Token<>(TokenTypes.HEX,"018F"),
-            new Token<>(TokenTypes.BINHEX,"0AFx010"),
+            new Token<>(TokenTypes.DEC,"21001010101001"),
+            new Token<>(TokenTypes.DEC,"100000004"),
             new Token<>(TokenTypes.EOF,null)
         );
-        assertEquals(expected, lexer.lex(" 0110 102 018F 0AFx010"));
-    }
-    @Test 
-    public void testOtherTokensAsPostfixes() throws BadTokenException{
-        List<Token<TokenTypes>> expected = Arrays.asList(
-            new Token<>(TokenTypes.DEC,"210"),
-            new Token<>(TokenTypes.HEX,"F801"),
-            new Token<>(TokenTypes.EOF,null)
-        );
-        assertEquals(expected, lexer.lex(" 210 F801"));
+        assertEquals(expected, lexer.lex("21001010101001 100000004"));
     }
 
-    @Test(expected = BadTokenException.class) public void testBadNumber() throws BadTokenException{
-        lexer.lex(" 0AFx0102");
+    @Test 
+    public void testOtherTokensAsHex() throws BadTokenException{
+        List<Token<TokenTypes>> expected = Arrays.asList(
+            new Token<>(TokenTypes.HEX,"F801"),
+            new Token<>(TokenTypes.HEX,"0A0101"),
+            new Token<>(TokenTypes.HEX,"5CC50101"),
+            new Token<>(TokenTypes.EOF,null)
+        );
+        assertEquals(expected, lexer.lex(" F801 0A0101 5CC50101"));
     }
-    @Test(expected = BadTokenException.class) public void testBadCharacters() throws BadTokenException{
-        lexer.lex("ho1a");
+
+    @Test 
+    public void testOtherTokensAsBinHex() throws BadTokenException{
+        List<Token<TokenTypes>> expected = Arrays.asList(
+            new Token<>(TokenTypes.BINHEX,"0AFx010"),
+            new Token<>(TokenTypes.DEC,"345x010"),
+            new Token<>(TokenTypes.EOF,null)
+        );
+        assertEquals(expected, lexer.lex(" 0AFx010 345x010 "));
     }
     
 }
