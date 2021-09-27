@@ -42,10 +42,13 @@ public class NumbersoupExtraTest {
     public void testOtherTokensAsBinHex() throws BadTokenException{
         List<Token<TokenTypes>> expected = Arrays.asList(
             new Token<>(TokenTypes.BINHEX,"0AFx010"),
-            new Token<>(TokenTypes.DEC,"345x010"),
+            new Token<>(TokenTypes.BINHEX,"345Cx0"),
             new Token<>(TokenTypes.EOF,null)
         );
-        assertEquals(expected, lexer.lex(" 0AFx010 345x010 "));
+        assertEquals(expected, lexer.lex(" 0AFx010 345Cx0 "));
     }
     
+    @Test(expected = BadTokenException.class) public void testBadNumber() throws BadTokenException{
+        lexer.lex(" 02x010");
+    }
 }
